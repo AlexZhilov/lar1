@@ -6,11 +6,21 @@
             <div class="col-md-12">
                 <h1>create new post</h1>
 
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
                 <form class="row g-3" action="{{ route('post.store') }}" method="post">
 
                     @csrf
                     <div class="col-md-6">
-                        <label for="title" class="form-label">title</label>
+                        <label for="title" class="form-label">Заголовок</label>
                         <input type="text" class="form-control" name="title" id="title" value="{{ old('title') }}">
                         @error('title')
                         <p class="text-danger">{{ $message }}</p>
