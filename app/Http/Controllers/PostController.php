@@ -2,21 +2,23 @@
 
 namespace App\Http\Controllers;
 
-
+use App\Http\Filters\PostFilter;
+use App\Http\Requests\Post\FilterRequest;
+use App\Http\Requests\Post\StoreRequest;
 use App\Models\Category;
 use App\Models\Post;
-use App\Models\PostTag;
 use App\Models\Tag;
 
-class PostController extends Controller
+class PostController extends BaseController
 {
 
-    public function index()
+    public function index(FilterRequest $request)
     {
-//        $category = Category::find(2)->posts;
-//        dd($category);
+        $data = $request->validated();
+        $filter = app()->make(PostFilter::class, ['queryParams' => array_filter($data)]);
 
-        $posts = Post::all();
+        $posts = Post::filter($filter)->paginate(10);
+
         return view('post.index', compact('posts'));
     }
 
@@ -32,22 +34,11 @@ class PostController extends Controller
         return view('post.create', compact('tags', 'categories'));
     }
 
-    public function store()
+    public function store(StoreRequest $request)
     {
-        $data = request()->validate([
-            'title' => 'required|string',
-            'text' => 'required|string',
-//            'img' => 'string',
-            'category_id' => 'integer',
-            'tag' => 'array',
-        ]);
+        $data = $request->validated();
 //        dd($data);
-        $tags = $data['tag'];
-        unset($data['tag']);
-
-        $post = Post::create($data);
-        //добавляем теги к посту
-        $post->tags()->attach($tags);
+        $this->service->store($data);
 
         return redirect()->route('post.index');
     }
@@ -59,22 +50,11 @@ class PostController extends Controller
         return view('post.edit', compact('post', 'categories', 'tags'));
     }
 
-    public function update(Post $post)
+    public function update(StoreRequest $request, Post $post)
     {
-        $data = request()->validate([
-            'title' => 'required|string',
-            'text' => 'required|string',
-            'category_id' => 'integer',
-            'tag' => 'array',
-//            'img' => 'string',
-        ]);
-//        dd($data);
-        $tags = $data['tag'];
-        unset($data['tag']);
+        $data = $request->validated();
 
-        $post->update($data);
-        //добавляем теги к посту
-        $post->tags()->sync($tags);
+        $this->service->update($post, $data);
 
         return redirect()->route('post.view', $post->id);
     }
