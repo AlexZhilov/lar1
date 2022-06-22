@@ -4,6 +4,7 @@
 namespace App\Http\Filters;
 
 
+use App\Http\Filters\base\AbstractFilter;
 use Illuminate\Database\Eloquent\Builder;
 
 class PostFilter extends AbstractFilter

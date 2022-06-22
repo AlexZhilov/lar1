@@ -14,7 +14,7 @@ class AddForeignKeyToPostsTable extends Migration
     public function up()
     {
         Schema::table('posts', function (Blueprint $table) {
-            $table->foreign('category_id', 'post_category_fk')->references('id')->on('categories');
+            $table->foreign('category_id', 'post_category_fk')->references('id')->on('categories')->onDelete('cascade');;;
 //            $table->foreignId('category_id')->constrained();
         });
     }

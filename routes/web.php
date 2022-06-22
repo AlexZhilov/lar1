@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\PostController;
+use \App\Http\Controllers\Admin\Article\ArticleController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,14 +15,35 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('main');
 })->name('main.page');
 
-Route::get('post', 'PostController@index')->name('post.index');
-Route::get('post/create', [PostController::class, 'create'])->name('post.create');
-Route::post('post/create', [PostController::class, 'store'])->name('post.store');
-Route::get('post/{post}', 'PostController@view')->name('post.view');
-Route::get('post/{post}/edit', [PostController::class, 'edit'])->name('post.edit');
-Route::patch('post/{post}/edit', [PostController::class, 'update'])->name('post.update');
-Route::delete('post/{post}', [PostController::class, 'destroy'])->name('post.destroy');
-//Route::get()
+Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => 'admin'], function(){
+    // Post
+    Route::group(['namespace' => 'Post', 'prefix' => 'post'], function(){
+        Route::get('/', 'IndexController')->name('admin.post.index');
+        Route::get('/create', 'CreateController')->name('admin.post.create');
+        Route::post('/create', 'StoreController')->name('admin.post.store');
+
+        Route::get('/{post}', 'ViewController')->name('admin.post.view');
+        Route::get('/{post}/edit', 'EditController')->name('admin.post.edit');
+        Route::patch('/{post}/edit', 'UpdateController')->name('admin.post.update');
+
+        Route::delete('/{post}', 'DestroyController')->name('admin.post.destroy');
+    });
+
+    // Article
+    Route::resource('article', 'Article\ArticleController');
+
+});
+
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+//
+//Route::get('about/{id}/{str}', 'AboutController@index')
+//    ->name('about.index')
+//    ->where(['id' => '\d', 'str' => '\w\-']);
+
+//Route::match(['post','get'], 'IndexController');
