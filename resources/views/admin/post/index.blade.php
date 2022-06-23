@@ -29,7 +29,7 @@
 
 @endsection
 
-@push('scripts')
+@push('script')
 <script>
     console.log('admin.post.index');
 </script>

@@ -6,16 +6,6 @@
             <div class="col-md-12">
                 <h1>create new post</h1>
 
-                @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-
                 <form class="row g-3" action="{{ route('admin.post.store') }}" method="post">
 
                     @csrf
@@ -54,9 +44,9 @@
                         <label for="inputState">Category</label>
                         <select id="inputState" class="form-control" name="category_id">
 
-                            @foreach($categories as $category)
+                            @foreach($categories as $id => $category)
 
-                                <option {{ old('category_id') == $category->id ? 'selected' : '' }} value="{{ $category->id }}">{{ $category->title }}</option>
+                                <option {{ old('category_id') == $id ? 'selected' : '' }} value="{{ $id }}">{{ $category }}</option>
 
                             @endforeach
 

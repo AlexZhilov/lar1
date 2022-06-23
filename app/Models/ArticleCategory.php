@@ -5,6 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class ArticleCategory
+ * @package App\Models
+ */
 class ArticleCategory extends Model
 {
     use HasFactory;
@@ -13,6 +17,6 @@ class ArticleCategory extends Model
 
     public function articles()
     {
-        return $this->belongsTo(Article::class, 'category_id', 'id');
+        return $this->hasMany(Article::class, 'category_id');
     }
 }

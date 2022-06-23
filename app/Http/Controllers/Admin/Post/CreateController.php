@@ -13,7 +13,7 @@ class CreateController extends BaseController
     public function __invoke()
     {
         $tags = Tag::all();
-        $categories = Category::all();
+        $categories = Category::pluck('title', 'id')->all();
         return view('admin.post.create', compact('tags', 'categories'));
     }
 }

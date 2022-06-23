@@ -132,5 +132,15 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
+        'title' => [
+            'required' => 'Введите :attribute!',
+            'min' => 'Маловато...'
+        ]
+    ],
+    'attributes' => [
+        'title' => 'Заголовок',
+        'text' => 'Текст',
+        'tags' => 'Теги',
+        'category' => 'Категория'
     ],
 ];

@@ -14,7 +14,6 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 
 class ArticleController extends BaseController
 {
@@ -29,7 +28,7 @@ class ArticleController extends BaseController
     {
         $data = $request->validated();
         $filter = app()->make(ArticleFilter::class, ['queryParams' => array_filter($data)]);
-        $articles = Article::filter($filter)->paginate(10);
+        $articles = Article::filter($filter)->with('category')->paginate(10);
 //        dd($articles);
 
         return view('admin.article.index', compact('articles'));
@@ -56,8 +55,8 @@ class ArticleController extends BaseController
     {
         $data = $request->validated();
 
-        Article::create($data);
-
+        $article = Article::create($data);
+        flash("Статья $article->id добавлена")->success();
         return redirect()->route('article.index');
     }
 
@@ -90,13 +89,14 @@ class ArticleController extends BaseController
      *
      * @param StoreRequest $request
      * @param Article $article
-     * @return Application|Factory|View
+     * @return RedirectResponse
      */
     public function update(StoreRequest $request, Article $article)
     {
         $data = $request->validated();
         $article->update($data);
-        return view('admin.article.view', compact('article'));
+        flash("Статья $article->id изменена")->success();
+        return redirect()->route('article.show', ['article' => $article]);
     }
 
     /**

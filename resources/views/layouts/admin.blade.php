@@ -214,6 +214,9 @@
         </div>
         <!-- /.content-header -->
 
+{{--@include('includes.messages')--}}
+        @include('flash::message')
+
         <!-- Main content -->
         <div class="content">
             <div class="container-fluid">
@@ -258,6 +261,6 @@
 <!-- Scripts -->
 <script src="{{ asset('js/app.js') }}" defer></script>
 
-@stack('scripts')
+@stack('script')
 </body>
 </html>

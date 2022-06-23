@@ -17,6 +17,8 @@ class Service
         $post = Post::create($data);
         //добавляем теги к посту
         $post->tags()->attach($tags);
+        flash("Пост $post->id успешно добавлен");
+//        session()->flash('flash', "Пост $post->id успешно добавлен");
     }
 
     /**
@@ -31,6 +33,8 @@ class Service
         $post->update($data);
         //добавляем теги к посту
         $post->tags()->sync($tags);
+        flash("Данные поста $post->id успешно обновлены");
+//        session()->flash('flash', "Данные поста $post->id успешно обновлены");
     }
 
     /**

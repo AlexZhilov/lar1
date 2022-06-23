@@ -11,6 +11,24 @@
                     <div class="content">
                         {{ $post->text }}
                     </div>
+
+                    @foreach($post->tags as $tag)
+                        <span>[{{ $tag->title }}]</span>
+                    @endforeach
+
+                    <div>
+                        <span>created:</span>
+                        <span>{{ $post->created_at->diffForHumans() }}</span>
+                    </div>
+
+                    @if($post->updated_at != $post->created_at)
+                        <div>
+                            <span>updated:</span>
+                            <span>{{ $post->updated_at->diffForHumans() }}</span>
+                        </div>
+                    @endif
+
+
                     <form action="{{ route('admin.post.destroy', $post->id) }}" method="post">
                         @csrf
                         @method('delete')
