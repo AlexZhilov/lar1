@@ -13,7 +13,6 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 
 class ArticleController extends BaseController
 {
@@ -48,12 +47,17 @@ class ArticleController extends BaseController
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
+     * @param StoreRequest $request
      * @return RedirectResponse
      */
     public function store(StoreRequest $request)
     {
         $data = $request->validated();
+
+        if($request->hasFile('image')){
+            $image = $request->file('image')->store('images/article');
+            $data['image'] = $image;
+        }
 
         $article = Article::create($data);
         flash("Статья $article->id добавлена")->success();
@@ -74,7 +78,6 @@ class ArticleController extends BaseController
     /**
      * Show the form for editing the specified resource.
      *
-     * @param StoreRequest $request
      * @param Article $article
      * @return Application|Factory|View
      */
@@ -94,6 +97,13 @@ class ArticleController extends BaseController
     public function update(StoreRequest $request, Article $article)
     {
         $data = $request->validated();
+
+        if($request->hasFile('image')){
+            //
+        }else{
+            $data = $request->except(['image']);
+        }
+
         $article->update($data);
         flash("Статья $article->id изменена")->success();
         return redirect()->route('article.show', ['article' => $article]);
@@ -108,6 +118,7 @@ class ArticleController extends BaseController
     public function destroy(Article $article)
     {
         $article->delete();
+        flash("$article->id удалена")->warning();
         return redirect()->route('article.index');
     }
 }

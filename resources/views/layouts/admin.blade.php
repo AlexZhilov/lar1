@@ -213,8 +213,9 @@
             </div><!-- /.container-fluid -->
         </div>
         <!-- /.content-header -->
-
-{{--@include('includes.messages')--}}
+        {{-- Вывод ошибок --}}
+        @include('includes.errors')
+        {{-- Вывод flash-сообщений --}}
         @include('flash::message')
 
         <!-- Main content -->

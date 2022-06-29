@@ -6,17 +6,7 @@
             <div class="col-md-12">
                 <h1>create new post</h1>
 
-                @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-
-                <form class="row g-3" action="{{ route('article.store') }}" method="post">
+                <form class="row g-3" action="{{ route('article.store') }}" method="post" enctype="multipart/form-data">
 
                     @csrf
                     <div class="col-md-6">
@@ -26,10 +16,12 @@
                         <p class="text-danger">{{ $message }}</p>
                         @enderror
                     </div>
-                    {{--                    <div class="col-md-6">--}}
-                    {{--                        <label for="file" class="form-label">img</label>--}}
-                    {{--                        <input type="file" class="form-control" name="img" id="file">--}}
-                    {{--                    </div>--}}
+
+                    <div class="col-md-6">
+                        <label for="file" class="form-label">Изображение</label>
+                        <input type="file" class="form-control" name="image" id="file" value="{{ old('image') }}">
+                    </div>
+
                     <div class="col-12">
                         <label for="text" class="form-label">text</label>
                         <textarea class="form-control @error('text') is-invalid @enderror" id="text" name="text" placeholder="text...">{{ old('text') }}</textarea>

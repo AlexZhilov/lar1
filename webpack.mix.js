@@ -11,6 +11,20 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/js/app.js', 'public/js')
+mix
+    .js('resources/js/app.js', 'public/js')
+
+    // .styles([
+    //     'resources/css/app.css',
+    // ], 'public/css/app.css')
+    //
+    // .scripts([
+    //     'resources/js/app.js',
+    // ],'public/js/scripts.js')
+
     .sass('resources/sass/app.scss', 'public/css')
+
+    .browserSync('http://127.0.0.1')
+
     .sourceMaps();
+
